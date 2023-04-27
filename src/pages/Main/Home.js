@@ -3,19 +3,20 @@ import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "../../components/ProductCard";
 import { toggleBrand, toggleStock } from "../../redux/actions/filterActions";
 import loadProductData from "../../redux/thunk/products/fetchProducts";
+import { useGetProductsQuery } from "../../features/api/apiSlice";
 
 const Home = () => {
+  const {data,isLoading,isError,isSuccess,error}=useGetProductsQuery()
+  const products = data?.data;
   const filters = useSelector((state) => state.filter.filters);
-  const products = useSelector((state) => state.product.products);
-  const { brands, stock } = filters;
+  // const products = useSelector((state) => state.product.products);
+  const { brands, stock } = data?.data;
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(loadProductData());
-  }, [dispatch]);
-
+  // useEffect(() => {
+  //   dispatch(loadProductData());
+  // }, [dispatch]);
   const activeClass = "text-white bg-indigo-500 border-white";
-
   let content;
 
   if (products.length) {
