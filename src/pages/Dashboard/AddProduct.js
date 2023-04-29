@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import addProductData from "../../redux/thunk/products/addProductData";
+import { useAddProductMutation } from "../../features/api/apiSlice";
+import { toast } from "react-hot-toast";
 
 const AddProduct = () => {
-  const { register, handleSubmit } = useForm();
-  const dispatch = useDispatch();
+  const { register, handleSubmit,reset } = useForm();
+  const [addProduct,{isLoading,isSuccess}] = useAddProductMutation();
 
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading('Posting...',{id:"addProduct"})
+        }
+        if (isSuccess) {
+          toast.success('Product added', { id: "addProduct" })
+          reset()
+        }
+ },[isLoading,isSuccess,reset])
   const submit = (data) => {
     const product = {
       model: data.model,
@@ -21,8 +30,7 @@ const AddProduct = () => {
       ],
       spec: [],
     };
-    console.log(product);
-    dispatch(addProductData(product));
+addProduct(product)
   };
 
   return (

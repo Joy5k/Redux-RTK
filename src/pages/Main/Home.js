@@ -16,7 +16,10 @@ const Home = () => {
   const activeClass = "text-white bg-indigo-500 border-white";
   if (isLoading) {
   return <p>Loading...</p>
-}
+  }
+  if (isError) {
+    return <p>Something went wrong.</p>
+  }
   return (
     <div className='max-w-7xl gap-14 mx-auto my-10'>
       <div className='mb-10 flex justify-end gap-5'>
